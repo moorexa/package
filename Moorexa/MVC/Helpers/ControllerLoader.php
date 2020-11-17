@@ -273,10 +273,10 @@ class ControllerLoader
         self::$starterTitle = is_string(RouterHandler::getStarterPack('title')) ? RouterHandler::getStarterPack('title') : '';
 
         // get target
-        $target = env('bootstrap', 'maintaince-mode') ? 'maintenance' : 'coming-soon';
+        $target = env('bootstrap', 'maintenance-mode') ? 'maintenance' : 'coming-soon';
 
         // check if coming soon or maintenance mode has been activated, load from starter pack
-        if (env('bootstrap', 'maintaince-mode') || env('bootstrap', 'coming-soon')) return self::loadStarterPack($target);
+        if (env('bootstrap', 'maintenance-mode') || env('bootstrap', 'coming-soon')) return self::loadStarterPack($target);
 
         // load starter if requested
         if ($controller == self::$starterTitle) return self::loadStarterPack('main');

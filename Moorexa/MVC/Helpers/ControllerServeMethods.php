@@ -31,7 +31,7 @@ trait ControllerServeMethods
      */
     public static function basePath() : string 
     {
-        return self::$basePath != '' ? self::$basePath : env('bootstrap', 'controller.basepath');
+        return self::$basePath != '' ? self::$basePath : env('bootstrap', 'controller.base.path');
     }
 
     /**

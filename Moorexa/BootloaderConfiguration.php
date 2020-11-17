@@ -86,7 +86,7 @@ class BootloaderConfiguration
      */
     private function registerAutoloaderNamespaces(array &$finder)
     {
-        $namespaces = isset($finder['namespacing']) ? $finder['namespacing'] : false;
+        $namespaces = isset($finder['namespaces']) ? $finder['namespaces'] : false;
 
         if ($namespaces !== false) :
 

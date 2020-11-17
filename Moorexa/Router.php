@@ -49,7 +49,12 @@ class Router implements RouterInterface
      * @var array $functionsCreated
      */
     private static $functionsCreated = [];
- 
+
+    /**
+     * @var array
+     */
+    private static $requestMatch = [];
+
     /**
      * @method Router any
      * @param array $arguments
@@ -162,6 +167,7 @@ class Router implements RouterInterface
      * @param array $arguments
      * @return mixed
      * @throws ClassNotFound
+     * @throws Exception
      */
     public static function __callStatic(string $method, array $arguments) 
     {
@@ -275,13 +281,13 @@ class Router implements RouterInterface
                         // splice value in
                         $before = array_splice($url, 0, $index);
 
-                        // get url agein
+                        // get url again
                         $url = Router::$requestUri;
 
                         // get after the index
                         $after = array_splice($url, $index+1);
 
-                        // remove from existsing
+                        // remove from existing
                         foreach ($with as $indexWith => $valWith) :
 
                             // remove from before if it exists
@@ -331,6 +337,9 @@ class Router implements RouterInterface
         if (isset(self::$functionsCreated[$functionName])) :
             return call_user_func_array(self::$functionsCreated[$functionName], $arguments);
         endif;
+
+        // return 0
+        return 0;
     }
 
     /**
@@ -391,7 +400,7 @@ class Router implements RouterInterface
                         $classMethod = isset($condition[1]) ? $condition[1] : null;
 
                         // are we good 
-                        if ($classMethod == null) throw new Exception('Missing Resource method for route #['+$condition[0]+']');
+                        if ($classMethod == null) throw new Exception('Missing Resource method for route #['.$condition[0].']');
 
                         // check for method
                         if (!method_exists($instance, $classMethod)) throw new MethodNotFound($className, $classMethod);
@@ -414,9 +423,9 @@ class Router implements RouterInterface
      * @param string $method
      * @param array $arguments
      * @throws Exception
-     * @return void
+     * @return mixed
      */
-    public static function resolver(string $method, array $arguments) : void
+    public static function resolver(string $method, array $arguments)
     {
         // remove resolve from method
         $method = strtolower(preg_replace('/^(resolve)/i', '', $method));
@@ -435,5 +444,8 @@ class Router implements RouterInterface
 
         // load request now
         call_user_func_array([static::class, $method], $arguments);
+
+        // return 0
+        return 0;
     }
 }
