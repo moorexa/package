@@ -10,6 +10,7 @@ use Lightroom\Vendor\{
     Monolog\MonologWrapper, 
     Whoops\WhoopsWrapper
 };
+use Lightroom\Common\File;
 use Lightroom\Adapter\{
     Configuration\Environment, FileDependencyChecker, 
     GlobalVariables as GlobalVars, ClassManager
@@ -175,7 +176,6 @@ trait DefaultPackagerConfiguration
         // Closure of FrameworkConfiguration
         return function() use ($stackFiles)
         {
-
             $this->loadClass(Environment::class, $this->import($stackFiles)->varName('config')->export([
                 /**
                  * @var string $globalfunc
@@ -185,13 +185,24 @@ trait DefaultPackagerConfiguration
                 'globalfunc' => GLOBAL_CORE . '/Functions/GlobalFunctions.php']
             ));
 
-             $this->loadClass(Constants::class, $this->import([ PATH_TO_CONFIG . '/constants'])->export([
-                 /**
-                  * @var string $set
-                  * This exported variable would be used in constants.php to make room for global constants
-                  */
-                 'set' => GlobalVars::var_get('global-constant')
-             ]));
+            $this->loadClass(Constants::class, $this->import([ PATH_TO_CONFIG . '/constants'])->export([
+                /**
+                 * @var string $set
+                * This exported variable would be used in constants.php to make room for global constants
+                */
+                'set' => GlobalVars::var_get('global-constant')
+            ]));
+
+            // load import file
+            if (function_exists('import')) :
+
+                // load to files array
+                File::$filesArray = include_once(PATH_TO_CONFIG . '/import.php');
+
+                // load init array
+                import('@init');
+                
+            endif;
         };
     }
 
