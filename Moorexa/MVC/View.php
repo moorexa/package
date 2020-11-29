@@ -33,8 +33,8 @@ class View extends ControllerLoader
     public $liveStaticFiles = [];
 
     /**
-    * @var array $cssArray
-    */
+     * @var array $cssArray
+     */
     public $cssArray = [];
 
     /**
@@ -89,6 +89,7 @@ class View extends ControllerLoader
      */
     public function loadBundle() : View
     {
+        // load bundle
         if (is_null($this->bundle)) :
         
             // @var object $loadStatic
@@ -104,6 +105,9 @@ class View extends ControllerLoader
                 
                     $content = file_get_contents($path);
                     $json = json_decode(trim($content));
+
+                    // load constants
+                    $this->loadConstants($json);
 
                     // update bundle
                     $this->bundle = is_null($json) ? (object) ['scripts' => [], 'stylesheet' => []] : $json;
@@ -126,7 +130,23 @@ class View extends ControllerLoader
 
         endif;
 
+        // return instance
         return $this;
+    }
+
+    /**
+     * @method View setBundle
+     * @param array $config
+     * 
+     * Set bundle
+     */
+    public function setBundle(array $config) 
+    {
+        // set bundle
+        $this->bundle = (object) $config;
+
+        // load constants
+        $this->loadConstants($this->bundle);
     }
 
     /**
@@ -452,5 +472,54 @@ class View extends ControllerLoader
         $top = null;
         $bottom = null;
         $before = null;
+    }
+
+    // load constant if found
+    private function loadConstants(object &$json)
+    {
+        // load all target list
+        foreach ($json as $target => $list) :
+
+            // ilterate through the list
+            foreach ($list as $index => $listItem) :
+
+                // check for curly brace bracket
+                if (preg_match_all('/[{]([a-zA-Z_0-9]+?)[}]/', $listItem, $constant)) :
+
+                    // get constant name and index
+                    foreach ($constant[1] as $constantIndex => $constantName) :
+
+                        if (defined($constantName)) :
+
+                            // get constant
+                            $constantValue = constant($constantName);
+
+                        else :
+
+                            // doesn't exists
+                            $constantValue = null;
+
+                        endif;
+
+
+                        // remove constant wrapper
+                        $list[$index] = str_replace($constant[0][$constantIndex], $constantValue, $listItem);
+
+                    endforeach;
+
+                endif;
+
+            endforeach;
+
+            // update json
+            $json->{$target} = $list;
+
+            // clean up
+            $index = $listItem = $constant = null;
+
+        endforeach;
+
+        // clean up
+        $list = $target = null;
     }
 }

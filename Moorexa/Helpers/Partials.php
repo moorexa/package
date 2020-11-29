@@ -173,14 +173,10 @@ class Partials
             );
                 $instance->InterpolateContent = $content;
 
-                // auto caching enabled?
-                if (env("bootstrap", "enable.caching")) :
-                
-                    $instance->cachePartial(null, $other, $useName);
-                    $instance->outputOriginal = null;
-                    $instance->InterpolateContent;
-
-                endif;
+                // cache now
+                $instance->cachePartial(null, $other, $useName);
+                $instance->outputOriginal = null;
+                $instance->InterpolateContent;
 
             endif;
 

@@ -705,9 +705,12 @@ class Assets
 	 * 
 	 * This method would load a packed css files. 
 	 */
-	public function loadCss(array $cssFiles) : string 
+	public function loadCss(array $cssFiles = []) : string 
 	{
 		$css = [];
+
+		// load css files
+		if (count($cssFiles) == 0) $cssFiles = app('view')->unpackCss();
 
 		// check if a css position has been changed
 		$this->changePositionIfChanged('css', $cssFiles);
@@ -749,9 +752,12 @@ class Assets
      * This method would load a packed javascript files.
      * @throws Exception
      */
-	public function loadJs(array $jsFiles) : string 
+	public function loadJs(array $jsFiles = []) : string 
 	{
 		$js = [];
+
+		// load js files if empty
+		if (count($jsFiles) == 0) $jsFiles = app('view')->unpackJavascripts();
 
 		// add php-vars.js 
 		if (count(self::$phpVarsData) > 0) array_unshift($jsFiles, 'php-vars.js');
