@@ -15,6 +15,7 @@ use ReflectionException;
 use Lightroom\Packager\Moorexa\Helpers\{
     UrlControls, URL
 };
+use Lightroom\Templates\TemplateHandler;
 use Lightroom\Router\Interfaces\RouterHandlerInterface;
 use Lightroom\Packager\Moorexa\MVC\Helpers\ControllerViewHandler;
 
@@ -45,6 +46,11 @@ class MoorexaMicroRouterController implements RouterHandlerInterface
 
         // register framework namespace
         self::registerControllerNamespace();
+
+        // load template handler functions
+        (new TemplateHandler(function(){
+            // template handler body
+        }));
 
         // get container file from services directory
         $containerFile = get_path(func()->const('services'), '/container.php');
