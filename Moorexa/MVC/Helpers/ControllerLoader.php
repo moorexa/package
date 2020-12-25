@@ -14,6 +14,7 @@ use ReflectionClass;
 use ReflectionException;
 use function Lightroom\Requests\Functions\session;
 use Lightroom\Packager\Moorexa\Helpers\{UrlControls, URL};
+use function Lightroom\Functions\GlobalVariables\{var_set};
 /**
  * @package Moorexa ControllerLoader Handler
  * @author Amadi Ifeanyi <amadiify.com>
@@ -571,6 +572,16 @@ class ControllerLoader
     {
         // using payloads 
         $payload = ClassManager::singleton(Payload::class)->clearPayloads();
+
+        // set the incoming url
+        var_set('url', (object)[
+            'href'          => func()->url(implode('/', $incomingUrl)), 
+            'pathname'      => implode('/', $incomingUrl),
+            'origin'        => func()->url(),
+            'view'          => $incomingUrl[self::SECOND_PARAM],
+            'controller'    => $incomingUrl[self::FIRST_PARAM],
+            'params'        => $incomingUrl
+        ]);
 
         // get payload runner
         $payloadRunner = ClassManager::singleton(PayloadRunner::class);

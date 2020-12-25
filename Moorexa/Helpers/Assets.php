@@ -787,7 +787,7 @@ class Assets
 			if (!isset($parse['scheme'])) $val = $url . $val;
 
 			// @var string $type
-			$type = 'text/deffered';
+			$type = func()->finder('javascript_type');
 
 			// @var string $base 
 			$base = basename($val);
@@ -796,9 +796,6 @@ class Assets
 			
 				// @var array $config
 				$config = self::$jsLoadConfig[$base];
-
-				// update $type
-				$type = 'text/deffered';
 
 				// update $type
 				if (isset($config['deffer']) && !$config['deffer']) $type = 'text/javascript';
@@ -1070,9 +1067,9 @@ class Assets
 		endforeach;
 		
 		// add callbacks
-		if (count($callbacks) > 0) self::$jsScripts[] = '<script type="text/deffered">window.addEventListener("load", function(){ '.implode(' ', $callbacks).' });</script>';
+		if (count($callbacks) > 0) self::$jsScripts[] = '<script type="'.func()->finder('javascript_type').'">window.addEventListener("load", function(){ '.implode(' ', $callbacks).' });</script>';
 		
 		// return string 
-		return '<script type="text/deffered">let phpvars = '.json_encode($data).';</script>';
+		return '<script type="'.func()->finder('javascript_type').'">let phpvars = '.json_encode($data).';</script>';
     }
 }
