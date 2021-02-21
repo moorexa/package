@@ -14,7 +14,7 @@ use ReflectionClass;
 use ReflectionException;
 use function Lightroom\Requests\Functions\session;
 use Lightroom\Packager\Moorexa\Helpers\{UrlControls, URL};
-use function Lightroom\Functions\GlobalVariables\{var_set};
+use function Lightroom\Functions\GlobalVariables\{var_set, var_get};
 /**
  * @package Moorexa ControllerLoader Handler
  * @author Amadi Ifeanyi <amadiify.com>
@@ -529,8 +529,14 @@ class ControllerLoader
         // @var string $defaultView
         $defaultView = Router::readConfig('router.default.view');
 
+        // set the view
+        $view = isset($incomingUrl[(int) self::SECOND_PARAM]) ? $incomingUrl[(int) self::SECOND_PARAM] : $defaultView;
+
+        // set view
+        var_set('view', $view);
+
         // get the view
-        $view = UrlControls::cleanUrl(isset($incomingUrl[(int) self::SECOND_PARAM]) ? $incomingUrl[(int) self::SECOND_PARAM] : $defaultView)[0];
+        $view = UrlControls::cleanUrl($view)[0];
 
         // check if view method doesn't exists
         if (!$reflection->hasMethod($view)) return self::loadStarterPack('page-not-found');
@@ -580,7 +586,7 @@ class ControllerLoader
             'origin'        => func()->url(),
             'view'          => $incomingUrl[self::SECOND_PARAM],
             'controller'    => $incomingUrl[self::FIRST_PARAM],
-            'params'        => $incomingUrl
+            'params'        => $incomingUrl,
         ]);
 
         // get payload runner
