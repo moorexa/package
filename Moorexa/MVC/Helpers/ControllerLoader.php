@@ -64,7 +64,7 @@ class ControllerLoader
 
             // manage request internally.
             if (is_array($incomingUrl) && count($incomingUrl) > self::SECOND_PARAM) :
-            
+
                 // shift cursor
                 $position = self::SECOND_PARAM;
 
@@ -78,7 +78,7 @@ class ControllerLoader
 
             // check default controller
             if ($returnArray['checkActive']) :
-            
+
                 // get default controller
                 $defaultController = Router::readConfig('router.default.controller');
 
@@ -87,21 +87,21 @@ class ControllerLoader
 
                 // check if controller exist
                 if (file_exists($controllerPath) && isset($incomingUrl[(int) self::FIRST_PARAM])) :
-                
+
                     // get the view
                     $view = UrlControls::cleanUrl($incomingUrl[(int) self::FIRST_PARAM])[0];
 
                     // check if method exists
                     if (stristr(file_get_contents($controllerPath), 'function '.$view) !== false) :
-                    
+
                         $returnArray['continue'] = false;
 
                         // push controller to the beginning of array
-                        array_unshift($incomingUrl, $defaultController); 
+                        array_unshift($incomingUrl, $defaultController);
 
                         // reformat incoming url
                         $incomingUrl = array_unique($incomingUrl);
-                    
+
                     endif;
 
                 endif;
@@ -168,9 +168,9 @@ class ControllerLoader
             $configurationPath = self::basePath() . '/' . $controller . '/config.php';
 
             if (file_exists($configurationPath)) :
-            
+
                 /**
-                 * @var bool $add 
+                 * @var bool $add
                  * A flag that determines if $controller configuration should be cached.
                  */
                 $add = false;
@@ -197,24 +197,24 @@ class ControllerLoader
 
                 // check if target exists
                 if (isset($configuration[$target])) :
-                
+
                     // get target
                     $target = $configuration[$target];
 
                     if (is_array($target) && is_string($targetFallback) && strlen($targetFallback) > 1) :
-                    
+
                         // update target
                         $target = isset($target[$targetFallback]) ? $target[$targetFallback] : null;
-                    
+
                     endif;
 
                     // update return value
                     $returnValue = $target;
 
                 endif;
-            
+
             else:
-            
+
                 // get constant
                 if ($target == 'directory') $returnValue = constant('CONTROLLER_'.strtoupper($targetFallback));
 
@@ -240,7 +240,7 @@ class ControllerLoader
      * @return string
      * @throws Exception
      */
-    public static function getControllerPath(string $controller) : string 
+    public static function getControllerPath(string $controller) : string
     {
         // update controller
         $controller = ucfirst($controller);
@@ -300,7 +300,7 @@ class ControllerLoader
      * @return mixed
      * @throws Exception
      */
-    public static function getControllerClass(string $controller) 
+    public static function getControllerClass(string $controller)
     {
         if ($controller != '') :
 
@@ -329,7 +329,7 @@ class ControllerLoader
      * @method ControllerLoader getNamepacePrefix
      * @return string
      */
-    public static function getNamespacePrefix() : string 
+    public static function getNamespacePrefix() : string
     {
         // @var string $returnValue
         $returnValue = '';
@@ -364,14 +364,14 @@ class ControllerLoader
 
             // check function implementation
             if (stristr(file_get_contents($controllerPath), 'function '.$defaultView) !== false) :
-            
+
                 // update return value
                 $returnValue['checkActive'] = false;
                 $returnValue['continue'] = false;
 
                 // update view
                 $incomingUrl[1] = $defaultView;
-                
+
             endif;
         }
     }
@@ -392,7 +392,7 @@ class ControllerLoader
 
         // now where do we begin checking
         switch ($position)
-        { 
+        {
             // a controller and a view requested.
             case 2:
 
@@ -404,11 +404,11 @@ class ControllerLoader
 
                 // the check
                 if (file_exists($controllerPath)) :
-                
+
                     // ok we have something.
                     // check for function implementation for view
                     if (stristr(file_get_contents($controllerPath), 'function '.$view) !== false) :
-                    
+
                         // controller found
                         $returnValue['checkActive'] = false;
                         $returnValue['continue'] = false;
@@ -430,7 +430,7 @@ class ControllerLoader
 
                 // check if session saved an active controller
                 if (session()->has('__active__controller')) :
-                
+
                     // @var string $activeController
                     $activeController = session()->get('__active__controller');
 
@@ -441,7 +441,7 @@ class ControllerLoader
 
                 // will execute only if session check failed. load controller with view
                 if ($returnValue['continue']) self::loadControllerWithView($controller, $returnValue, $incomingUrl);
-                
+
                 break;
         }
 
@@ -457,7 +457,7 @@ class ControllerLoader
     protected static function setCurrentPath(string $controller, array $configuration) : void
     {
         if ($controller != self::$starterTitle) :
-         
+
             // get base path
             $controllerBasePath = self::basePath();
 
@@ -469,7 +469,7 @@ class ControllerLoader
 
                 // check if directory exists
                 if (is_dir($subDirectory)) :
-                
+
                     // is defined?
                     $constant = strtoupper(basename($controller)) . '_' . strtoupper($constant);
 
@@ -498,7 +498,7 @@ class ControllerLoader
         $starter = RouterHandler::getStarterPack($target);
 
         // if it's an array, then use call_user_func method
-        if (is_array($starter)) : 
+        if (is_array($starter)) :
 
             // call function
             call_user_func_array($starter, $arguments);
@@ -521,7 +521,7 @@ class ControllerLoader
      * @throws ClassNotFound
      * @throws ReflectionException
      */
-    private static function loadControllerAndView(string $controllerClass, array $incomingUrl) 
+    private static function loadControllerAndView(string $controllerClass, array $incomingUrl)
     {
         // @var ReflectionClass $reflection
         $reflection = new ReflectionClass($controllerClass);
@@ -549,14 +549,14 @@ class ControllerLoader
 
         // load controller guard if found
         self::loadControllerGuard();
-        
+
         // we load the default view guard and receive an updated incoming url
         $incomingUrl = self::loadDefaultViewAndGuard(
-        [
-            'defaultView' => $defaultView,
-            'reflection' => &$reflection,
-            'controllerClass' => $controllerClass
-        ]);
+            [
+                'defaultView' => $defaultView,
+                'reflection' => &$reflection,
+                'controllerClass' => $controllerClass
+            ]);
 
         // try trigger controller event
         if (event()->canEmit('ev.controller.ready')) event()->emit('ev', 'controller.ready', $incomingUrl);
@@ -581,7 +581,7 @@ class ControllerLoader
 
         // set the incoming url
         var_set('url', (object)[
-            'href'          => func()->url(implode('/', $incomingUrl)), 
+            'href'          => func()->url(implode('/', $incomingUrl)),
             'pathname'      => implode('/', $incomingUrl),
             'origin'        => func()->url(),
             'view'          => $incomingUrl[self::SECOND_PARAM],
@@ -589,29 +589,32 @@ class ControllerLoader
             'params'        => $incomingUrl,
         ]);
 
+        // set the incoming url
+        var_set('incoming-url', $incomingUrl);
+
         // get payload runner
         $payloadRunner = ClassManager::singleton(PayloadRunner::class);
 
         /**
          * @package Payload ControllerMiddlewareLoader
-         * 
+         *
          * This attaches a middleware switch for the incoming request
          */
         $payload->register('attach-middleware', $payload->handler(ControllerMiddlewareLoader::class)->arguments($incomingUrl));
 
         /**
          * @package Payload ControllerViewHandler
-         * 
+         *
          * This attaches an handler for every view requests.
          */
         $payload->register('attach-view', $payload->handler(ControllerViewHandler::class)->arguments($incomingUrl, $reflection, function() use ($incomingUrl, $payload, $payloadRunner)
         {
             // using payloads 
             $payload->clearPayloads();
-        
+
             /**
              * @package Payload Registry
-             * 
+             *
              * This includes the payload registry for external load stack
              */
             $payloadRegistry = get_path(func()->const('services'), '/payloads.php');
