@@ -145,3 +145,4 @@ class MoorexaCliPackager implements PackageManagerInterface, LogbookLoggerInterf
         };
     }
 }
+

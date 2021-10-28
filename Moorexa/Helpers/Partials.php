@@ -384,7 +384,7 @@ class Partials
      * 
      * Check if partial has been cached previously, if not then cache.
      */
-    public function cachePartial($content = null, &$cache_path = null, string $cache_name) : bool
+    public function cachePartial($content = null, &$cache_path = null, string $cache_name = '') : bool
     {
         $path = get_path(func()->const('storage'), '/Caches/Partials/partial.cache.php');
 
