@@ -403,10 +403,10 @@ class Router implements RouterInterface
                         if ($classMethod == null) throw new Exception('Missing Resource method for route #['.$condition[0].']');
 
                         // check for method
-                        if (!method_exists($instance, $classMethod)) throw new MethodNotFound($className, $classMethod);
+                        if (!is_array($classMethod) && !method_exists($instance, $classMethod)) throw new MethodNotFound($className, $classMethod);
 
                         // call method
-                        call_user_func([static::class, $httpMethod], $condition[0], [$instance, $classMethod]);
+                        call_user_func([static::class, $httpMethod], $condition[0], is_array($classMethod) ? $classMethod : [$instance, $classMethod]);
 
                     endforeach;
 
