@@ -95,7 +95,7 @@ class TestManager implements CliInterface
                 if (!\is_null($testFile)) :
 
                     // read layout file
-                    $testLayout = __DIR__ . '/../../Test/TestLayout.txt';
+                    $testLayout = PATH_TO_SYSTEM . '/Test/TestLayout.txt';
 
                     // continue if test layout exists
                     if (\file_exists($testLayout)) :
