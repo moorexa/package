@@ -121,10 +121,10 @@ trait DirectoryAutoloader
         $file = array_pop($namespace) . '.php';
 
         // get sub directory
-        $subdirectory = Directories::findDirectory(HOME . $directory . '/', $namespace);
+        $subdirectory = Directories::findDirectory(BASE . $directory . '/', $namespace);
 
         // base directory
-        $baseDirectory = $subdirectory !== '' ? $subdirectory : HOME . $directory . '/';
+        $baseDirectory = $subdirectory !== '' ? $subdirectory : BASE . $directory . '/';
 
         return [$baseDirectory, $file];
     }
