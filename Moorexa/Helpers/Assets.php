@@ -1010,7 +1010,7 @@ class Assets
 			// get url
 			$url = $static_url != '' ? $static_url . '/' : func()->url();
 
-			$json = json_decode(file_get_contents($cache));
+			$json = file_exists($cache) ? json_decode(file_get_contents($cache)) : null;
 			$json = is_null($json) ? [] : func()->toArray($json);
 
 			// @var string $keyName for json
@@ -1033,6 +1033,7 @@ class Assets
 				$cacheFile = $url . $json[$file];
 
 			endif;
+			
 		
 		endif;
 
