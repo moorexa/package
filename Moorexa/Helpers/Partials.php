@@ -285,7 +285,7 @@ class Partials
                 // throw exception
                 $throw = true;
 
-                if (env('bootstrap', 'autogenerate.partials') === true) :
+                if (get_env('bootstrap', 'autogenerate.partials') === true) :
                 
                     $nameCopy = $name;
 

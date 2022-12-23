@@ -29,7 +29,7 @@ class Assets
 
     public function __get($name)
 	{
-		$this->static = env('bootstrap', 'staticurl');
+		$this->static = get_env('bootstrap', 'staticurl');
 
 		$this->folder = $name;
 
@@ -167,10 +167,10 @@ class Assets
 						endif;
 
 						// static url added ?
-						if (env('bootstrap', 'static_url') != '') :
+						if (get_env('bootstrap', 'static_url') != '') :
 						
 							// return image path.
-							return  env('bootstrap', 'static_url') . preg_replace('/^(.\/)/', '', $fileNoUpdate);
+							return  get_env('bootstrap', 'static_url') . preg_replace('/^(.\/)/', '', $fileNoUpdate);
 
 						endif;
 
@@ -719,7 +719,7 @@ class Assets
 		$cssFiles = array_merge($cssFiles, View::$liveStaticLoaded['css']);
 
 		// get static url
-		$static_url = env('bootstrap', 'static_url');
+		$static_url = get_env('bootstrap', 'static_url');
 
 		// get url
 		$url = $static_url != '' ? $static_url . '/' : func()->url();
@@ -769,7 +769,7 @@ class Assets
 		$jsFiles = array_merge($jsFiles, View::$liveStaticLoaded['js']);
 
 		// get static url
-		$static_url = env('bootstrap', 'static_url');
+		$static_url = get_env('bootstrap', 'static_url');
 
 		// get url
 		$url = $static_url != '' ? $static_url . '/' : func()->url();
@@ -1005,7 +1005,7 @@ class Assets
 			$cache = func()->const('assets') . '/assets.paths.json';
 
 			// get static url
-			$static_url = env('bootstrap', 'static_url');
+			$static_url = get_env('bootstrap', 'static_url');
 
 			// get url
 			$url = $static_url != '' ? $static_url . '/' : func()->url();

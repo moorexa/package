@@ -34,7 +34,7 @@ class URL
         if (self::$urlRegistered === false) :
             
             // @var string $url
-            $url = env('bootstrap', 'app.url');
+            $url = get_env('bootstrap', 'app.url');
 
             // @var URL $urlHelper
             $urlHelper = ClassManager::singleton(static::class);

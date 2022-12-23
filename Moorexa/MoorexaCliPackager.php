@@ -78,7 +78,7 @@ class MoorexaCliPackager implements PackageManagerInterface, LogbookLoggerInterf
          * @method payload application configuration
          *
          * load application configuration. You can use your custom configuration handler.
-         * This configuration handler provides us with the env(), error(), logger(), func(), env_set(), global functions for our application
+         * This configuration handler provides us with the get_env(), error(), logger(), func(), env_set(), global functions for our application
          */
         $payload->register('load-config', $payload->handler(FrameworkConfiguration::class)->arguments($this->defaultPackagerConfiguration()));
 

@@ -188,7 +188,7 @@ class ControllerLoader
                 if (!isset($configuration['use.default'])) :
 
                     // get bootstrap config
-                    $bootstrapConfig = env('bootstrap', 'controller_config');
+                    $bootstrapConfig = get_env('bootstrap', 'controller_config');
 
                     // merge if it's an array
                     if (is_array($bootstrapConfig) && is_array($configuration)) $configuration = array_merge($configuration, $bootstrapConfig);
@@ -274,10 +274,10 @@ class ControllerLoader
         self::$starterTitle = is_string(RouterHandler::getStarterPack('title')) ? RouterHandler::getStarterPack('title') : '';
 
         // get target
-        $target = env('bootstrap', 'maintenance-mode') ? 'maintenance' : 'coming-soon';
+        $target = get_env('bootstrap', 'maintenance-mode') ? 'maintenance' : 'coming-soon';
 
         // check if coming soon or maintenance mode has been activated, load from starter pack
-        if (env('bootstrap', 'maintenance-mode') || env('bootstrap', 'coming-soon')) return self::loadStarterPack($target);
+        if (get_env('bootstrap', 'maintenance-mode') || get_env('bootstrap', 'coming-soon')) return self::loadStarterPack($target);
 
         // load starter if requested
         if ($controller == self::$starterTitle) return self::loadStarterPack('main');
@@ -335,7 +335,7 @@ class ControllerLoader
         $returnValue = '';
 
         // get controller namespace prefix
-        $namespacePrefix = env('bootstrap', 'controller.namespace_prefix');
+        $namespacePrefix = get_env('bootstrap', 'controller.namespace_prefix');
 
         // clean up prefix
         if (is_string($namespacePrefix) && strlen($namespacePrefix) > 1)  $returnValue = ucfirst(preg_replace('/[^a-z0-9A-Z\_]/', '', $namespacePrefix)) . '\\';
