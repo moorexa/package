@@ -787,8 +787,11 @@ trait RouterControls
                         // get returned route
                         $returnedRoute = function() use (&$callback, &$arguments)
                         {
+                            // get val
+                            $val = call_user_func_array($callback, $arguments);
+                            
                             // call closure function and get return value
-                            $returnValue = preg_replace('/(^[\/])/', '', call_user_func_array($callback, $arguments));
+                            $returnValue = preg_replace('/(^[\/])/', '', ($val == null ? '' : $val));
 
                             // update RouterControls
                             self::$routeMatched = explode('/', $returnValue);
