@@ -73,13 +73,14 @@ class MoorexaMicroRouterController implements RouterHandlerInterface
         // get route matched
         $routeMatched = Router::getRouteMatched();
 
+        if (count($routeMatched) == 0) :
+            echo json_encode(['message' => 'Route not registered']);
+            die;
+        endif;
+
         // update incomingURI
-        URL::setIncomingUri( count($routeMatched) > 0 ? $routeMatched : Router::$requestUri );
-
-        // check controllers 
-        // get route from checking controllers
-        if (count($routeMatched) == 0) URL::setIncomingUri( ControllerLoader::useDefaultRoutingMechanism() );
-
+        URL::setIncomingUri( $routeMatched );
+        
         // serve controller
         ControllerLoader::serveController();
     }
