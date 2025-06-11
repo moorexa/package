@@ -56,6 +56,11 @@ class Model implements ModelInterface
     private static $modelMethodReturnValues = [];
 
     /**
+     * @var mixed $controller
+     */
+    public $controller;
+
+    /**
      * @method ModelInterface get
      * @param string $property
      * @return mixed
