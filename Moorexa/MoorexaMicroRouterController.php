@@ -91,7 +91,7 @@ class MoorexaMicroRouterController implements RouterHandlerInterface
                 'message'   => $e->getMessage(),
                 'file'      => $e->getFile(),
                 'line'      => $e->getLine(),
-                'trace'     => $e->getTrace(),
+                'trace'     => $e->getTrace()[0],
                 'status'    => 500,
             ]);
         }
