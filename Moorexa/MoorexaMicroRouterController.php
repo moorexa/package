@@ -18,6 +18,7 @@ use Lightroom\Packager\Moorexa\Helpers\{
 use Lightroom\Templates\TemplateHandler;
 use Lightroom\Router\Interfaces\RouterHandlerInterface;
 use Lightroom\Packager\Moorexa\MVC\Helpers\ControllerViewHandler;
+use function Lightroom\Templates\Functions\{render};
 
 /**
  * @package MoorexaMicroRouter Controller
@@ -82,7 +83,18 @@ class MoorexaMicroRouterController implements RouterHandlerInterface
         URL::setIncomingUri( $routeMatched );
         
         // serve controller
-        ControllerLoader::serveController();
+        try {
+            ControllerLoader::serveController();
+        } catch (\Throwable $e) {
+            http_response_code(500);
+            render([
+                'message'   => $e->getMessage(),
+                'file'      => $e->getFile(),
+                'line'      => $e->getLine(),
+                'trace'     => $e->getTrace(),
+                'status'    => 500,
+            ]);
+        }
     }
 
     /**
